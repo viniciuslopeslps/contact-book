@@ -1,7 +1,9 @@
 package com.example.vinicius.contactbook;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Browser;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +27,6 @@ import java.util.List;
 public class ContactListActivity extends AppCompatActivity {
     private ListView studentList;
 
-    //todo:parei 3:10
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,16 +93,20 @@ public class ContactListActivity extends AppCompatActivity {
     //menu de contexto é um menu de opcao quando o usuario clicar na lista
     @Override
     public void onCreateContextMenu(final ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
+        //pegando o aluno que foi clicado
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final Student student = (Student) studentList.getItemAtPosition(info.position);
+
+
         final StudentDAO studentDAO = new StudentDAO(this);
         super.onCreateContextMenu(menu, v, menuInfo);
         //criando os itens do menu
         MenuItem deleteItem = menu.add("Deletar");
 
+
         deleteItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-                Student student = (Student) studentList.getItemAtPosition(info.position);
                 studentDAO.delete(student);
                 studentDAO.close();
                 String message = "Aluno: " + student.getName() + "Deletado com sucesso!";
@@ -110,6 +115,39 @@ public class ContactListActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        //inicio de acessar site
+        // esse é um outro jeito de associar uma intent com uma opcao de menu de contexto
+        // esse jeito é mandando para uma intent implicita, pq nao sabemos qual o browser que o android vai abrir
+        MenuItem itemSite = menu.add("Visitar Site");
+        Intent gotoBrowser = new Intent(Intent.ACTION_VIEW);
+
+        String site = student.getSite();
+        if (!site.startsWith("https://")) {
+            site = "https://" + site;
+        }
+        gotoBrowser.setData(Uri.parse(site));
+        itemSite.setIntent(gotoBrowser);
+        //fim
+
+
+        //inicio de envio de sms
+        MenuItem itemSms = menu.add("Enviar sms");
+        Intent goToSms = new Intent(Intent.ACTION_VIEW);
+        //desse jeito o android procura a intent responsavel de acordo com o protocolo passado no set data
+        gotoBrowser.setData(Uri.parse("sms:" + student.getPhone()));
+        itemSms.setIntent(goToSms);
+        //fim
+
+        //inicio de visualizar no mapa
+        MenuItem itemMap = menu.add("Ver no mapa");
+        Intent goToMap = new Intent(Intent.ACTION_VIEW);
+        //com isso o google maps vai procurar a cordenada pelo endereço passado
+        //obs: o que muda é o protocolo
+        goToMap.setData(Uri.parse("geo:0,0?q=" + student.getAddress()));
+        itemMap.setIntent(goToMap);
+        //fim
     }
 
 
