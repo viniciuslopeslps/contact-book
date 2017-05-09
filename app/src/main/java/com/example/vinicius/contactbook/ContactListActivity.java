@@ -1,11 +1,15 @@
 package com.example.vinicius.contactbook;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Browser;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -148,7 +152,36 @@ public class ContactListActivity extends AppCompatActivity {
         goToMap.setData(Uri.parse("geo:0,0?q=" + student.getAddress()));
         itemMap.setIntent(goToMap);
         //fim
+
+
+        //inicio de fazer ligação
+        MenuItem itemCall = menu.add("Ligar");
+        itemCall.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                //com isso o google maps vai procurar a cordenada pelo endereço passado
+                //obs: o que muda é o protocolo
+                int hasPermission = ActivityCompat.checkSelfPermission(ContactListActivity.this, Manifest.permission.CALL_PHONE);
+                if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+                    //request permission = pede a permissao pro usuario para ligacao, (algumas coisas como quando envolver pagamento e necessario)
+                    ActivityCompat.requestPermissions(ContactListActivity.this, new String[]{
+                            //request code é udado no onRequestPermissionsResult ()123)
+                            Manifest.permission.CALL_PHONE}, 123);
+                } else {
+                    Intent goToCall = new Intent(Intent.ACTION_CALL);
+                    goToCall.setData(Uri.parse("tel:" + student.getPhone()));
+
+                    startActivity(goToCall);
+                }
+                return false;
+            }
+        });
+        //fim
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }
