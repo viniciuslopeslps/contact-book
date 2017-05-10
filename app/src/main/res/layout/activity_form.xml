@@ -14,12 +14,14 @@
             android:layout_height="225dp">
 
             <ImageView
+                android:id="@+id/formulario_foto"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="#00A8EC"
                 android:src="@drawable/person" />
 
             <Button
+                android:id="@+id/form_photo_button"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_alignParentBottom="true"
