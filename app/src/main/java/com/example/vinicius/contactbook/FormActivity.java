@@ -66,11 +66,7 @@ public class FormActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA_CODE) {
                 //abre a foto
-                ImageView photo = (ImageView) findViewById(R.id.formulario_foto);
-                Bitmap bitmap = BitmapFactory.decodeFile(pathPhoto);
-                Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
-                photo.setImageBitmap(bitmapReduzido);
-
+                formHelper.loadPhoto(pathPhoto);
             }
         }
     }

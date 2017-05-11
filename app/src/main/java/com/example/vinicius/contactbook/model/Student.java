@@ -11,6 +11,7 @@ public class Student implements Serializable {
     private String site;
     private Double rate;
     private String phone;
+    private String pathPhoto;
 
     public Long getId() {
         return id;
@@ -63,5 +64,13 @@ public class Student implements Serializable {
     @Override
     public String toString() {
         return getId() + " - " + getName();
+    }
+
+    public String getPathPhoto() {
+        return pathPhoto;
+    }
+
+    public void setPathPhoto(String pathPhoto) {
+        this.pathPhoto = pathPhoto;
     }
 }

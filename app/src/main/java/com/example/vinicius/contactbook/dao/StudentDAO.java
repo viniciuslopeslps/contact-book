@@ -17,12 +17,15 @@ public class StudentDAO extends SQLiteOpenHelper {
     public StudentDAO(Context context) {
         // ContactBook - nome do banco
 
-        super(context, "ContactBook", null, 1);
+        super(context, "ContactBook", null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE Students (id INTEGER PRIMARY KEY, name TEXT NOT NULL, address TEXT, phone TEXT, site TEXT, rate REAL);";
+        String sql = "CREATE TABLE Students (id INTEGER PRIMARY KEY, " +
+                "name TEXT NOT NULL, address " +
+                "TEXT, phone TEXT, site TEXT, " +
+                "rate REAL, pathPhoto TEXT);";
         db.execSQL(sql);
     }
 
@@ -50,6 +53,7 @@ public class StudentDAO extends SQLiteOpenHelper {
         values.put("phone", student.getPhone());
         values.put("site", student.getSite());
         values.put("rate", student.getRate());
+        values.put("pathPhoto", student.getPathPhoto());
         return values;
     }
 
@@ -72,6 +76,7 @@ public class StudentDAO extends SQLiteOpenHelper {
             student.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
             student.setSite(cursor.getString(cursor.getColumnIndex("site")));
             student.setRate(cursor.getDouble(cursor.getColumnIndex("rate")));
+            student.setPathPhoto(cursor.getString(cursor.getColumnIndex("pathPhoto")));
             students.add(student);
         }
         cursor.close();
