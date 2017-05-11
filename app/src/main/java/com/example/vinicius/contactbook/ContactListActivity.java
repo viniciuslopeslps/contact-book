@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vinicius.contactbook.adapter.StudentAdapter;
 import com.example.vinicius.contactbook.dao.StudentDAO;
 import com.example.vinicius.contactbook.model.Student;
 
@@ -84,7 +85,8 @@ public class ContactListActivity extends AppCompatActivity {
         //primeiro argumento = a classe de referencia, nesse caso = ContactListActivity
         //segundo = tipo da view para exibir o dado (se vc tiver o seu passar a referencia do seu)
         //terceiro = o valor que vc quer colocar lá
-        ArrayAdapter<Student> adapter = new ArrayAdapter<Student>(this, android.R.layout.simple_list_item_1, students);
+        //ArrayAdapter<Student> adapter = new ArrayAdapter<Student>(this, android.R.layout.list_content, students);
+        StudentAdapter adapter = new StudentAdapter(this, students);
         studentList.setAdapter(adapter);
     }
 
