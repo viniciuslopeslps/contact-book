@@ -34,7 +34,10 @@ public class FormHelper {
         student.setSite(siteText.getText().toString());
         student.setPhone(phoneText.getText().toString());
         student.setRate(Double.valueOf(rate.getProgress()));
-        student.setPathPhoto(photoView.getTag().toString());
+        Object tag = photoView.getTag();
+        if (tag != null) {
+            student.setPathPhoto(tag.toString());
+        }
         return student;
     }
 
