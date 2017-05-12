@@ -53,7 +53,9 @@ public class StudentDAO extends SQLiteOpenHelper {
         values.put("phone", student.getPhone());
         values.put("site", student.getSite());
         values.put("rate", student.getRate());
-        values.put("pathPhoto", student.getPathPhoto());
+        if (student.getPathPhoto() != null) {
+            values.put("pathPhoto", student.getPathPhoto());
+        }
         return values;
     }
 
