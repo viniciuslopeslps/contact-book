@@ -85,6 +85,15 @@ public class StudentDAO extends SQLiteOpenHelper {
         return students;
     }
 
+
+    public boolean isStudent(String phone) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM STUDENTS WHERE PHONE = ?", new String[]{phone});
+        int total = cursor.getCount();
+        cursor.close();
+        return total > 0;
+    }
+
     public void delete(Student student) {
         SQLiteDatabase db = getWritableDatabase();
         String[] params = {student.getId().toString()};
